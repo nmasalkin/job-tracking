@@ -1,9 +1,6 @@
 package ru.vk.education.job;
 
 import ru.vk.education.job.app.cli.CLI;
-import ru.vk.education.job.app.service.JobService;
-import ru.vk.education.job.app.service.MatchService;
-import ru.vk.education.job.app.service.UserService;
 import ru.vk.education.job.app.service.impl.JobServiceImpl;
 import ru.vk.education.job.app.service.impl.MatchServiceImpl;
 import ru.vk.education.job.app.service.impl.UserServiceImpl;
