@@ -3,28 +3,26 @@ package ru.vk.education.job.app.service;
 import ru.vk.education.job.data.model.Job;
 import ru.vk.education.job.data.model.Match;
 import ru.vk.education.job.data.model.User;
-import ru.vk.education.job.data.repository.JobRepository;
-import ru.vk.education.job.data.repository.UserRepository;
 
 import java.util.ArrayList;
 import java.util.List;
 
 public class MatchService {
 
-    private final UserRepository userRepository;
-    private final JobRepository jobRepository;
+    private final UserService userService;
+    private final JobService jobService;
 
-    public MatchService(UserRepository userRepository, JobRepository jobRepository) {
-        this.userRepository = userRepository;
-        this.jobRepository = jobRepository;
+    public MatchService(UserService userService, JobService jobService) {
+        this.userService = userService;
+        this.jobService = jobService;
     }
 
     public List<Job> suggest(String name) {
-        User user = userRepository.findByName(name);
+        User user = userService.findByName(name);
         if (user == null) {
             return null;
         }
-        List<Job> jobs = jobRepository.getAll();
+        List<Job> jobs = jobService.getAll();
         if (jobs == null) {
             return null;
         }
