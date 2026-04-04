@@ -1,11 +1,10 @@
 package ru.vk.education.job.app.service;
 
 import ru.vk.education.job.data.model.Job;
+import ru.vk.education.job.data.model.Match;
 import ru.vk.education.job.data.model.User;
 
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
+import java.util.*;
 
 public class CommandService {
 
@@ -39,6 +38,9 @@ public class CommandService {
                     break;
                 case "suggest":
                     suggest(command);
+                    break;
+                case "stat":
+                    stat(command);
                     break;
                 default:
                     break;
@@ -97,9 +99,7 @@ public class CommandService {
     }
 
     private void getAllUsers() {
-        for (User user : userService.getAll()) {
-            System.out.println(user);
-        }
+        userService.getAll().stream().sorted(Comparator.comparing(User::getName)).forEach(System.out::println);
     }
 
     private void addJob(String[] command) {
@@ -138,9 +138,7 @@ public class CommandService {
     }
 
     private void getAllJobs() {
-        for (Job job : jobService.getAll()) {
-            System.out.println(job);
-        }
+        jobService.getAll().stream().sorted(Comparator.comparing(Job::getTitle)).forEach(System.out::println);
     }
 
     private void suggest(String[] command) {
@@ -160,6 +158,58 @@ public class CommandService {
         List<String> history = fileService.readCommands();
         for (String historyLine : history) {
             System.out.println(historyLine);
+        }
+    }
+
+    private void stat(String[] command) {
+        if (command.length != 3) {
+            return;
+        }
+        switch (command[1]) {
+            case "--exp":
+                try {
+                    int n = Integer.parseInt(command[2]);
+                    List<Job> jobs = jobService.getAll().stream()
+                            .filter(job -> job.getExperience() >= n)
+                            .sorted(Comparator.comparing(Job::getTitle)).toList();
+                    jobs.forEach(System.out::println);
+                } catch (NumberFormatException e) {
+                    return;
+                }
+                break;
+            case "--match":
+                try {
+                    int n = Integer.parseInt(command[2]);
+                    List<User> users = userService.getAll().stream()
+                            .filter(user -> matchService.suggest(user.getName()) != null
+                                            && matchService.suggest(user.getName()).size() >= n).toList();
+                    users.forEach(System.out::println);
+                } catch (NumberFormatException e) {
+                    return;
+                }
+                break;
+            case "--top-skills":
+                try {
+                    int n = Integer.parseInt(command[2]);
+                    HashMap<String, Integer> skills = new HashMap<>();
+                    userService.getAll().forEach(user -> user.getSkills()
+                            .forEach(skill -> skills.put(skill, skills.get(skill) != null ? skills.get(skill) + 1 : 1)));
+                    int maxValue = skills.values().stream().max(Integer::compareTo).get();
+                    List<String> top = new ArrayList<>();
+                    while (maxValue > 0) {
+                        int finalMaxValue = maxValue;
+                        top.addAll(skills.keySet().stream()
+                                .filter(key -> skills.get(key)
+                                        .equals(finalMaxValue)).sorted().toList());
+                        maxValue--;
+                    }
+                    for (int i = 0; i < n; i++) {
+                        System.out.println(top.get(i));
+                    }
+                } catch (NumberFormatException e) {
+                    return;
+                }
+                break;
         }
     }
 }
