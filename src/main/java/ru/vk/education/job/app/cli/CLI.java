@@ -20,6 +20,9 @@ public class CLI {
         while (scanner.hasNextLine()) {
             String input = scanner.nextLine();
             if (!input.isEmpty()) {
+                if (input.equals("exit")) {
+                    return;
+                }
                 String[] command = input.split(" ");
                 commandService.definition(command);
             }

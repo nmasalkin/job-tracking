@@ -1,8 +1,8 @@
 package ru.vk.education.job.app.service;
 
 import ru.vk.education.job.data.model.Job;
-import ru.vk.education.job.data.model.Match;
 import ru.vk.education.job.data.model.User;
+import ru.vk.education.job.data.repository.BestJobRepository;
 
 import java.util.*;
 
@@ -12,12 +12,14 @@ public class CommandService {
     private final JobService jobService;
     private final MatchService matchService;
     private final FileService fileService;
+    private final StatisticService statisticService;
 
-    public CommandService(UserService userService, JobService jobService, MatchService matchService, FileService fileService) {
+    public CommandService(UserService userService, JobService jobService, MatchService matchService, FileService fileService, StatisticService statisticService) {
         this.userService = userService;
         this.jobService = jobService;
         this.matchService = matchService;
         this.fileService = fileService;
+        this.statisticService = statisticService;
     }
 
     public void definition(String[] command) {
@@ -56,8 +58,6 @@ public class CommandService {
                 case "history":
                     history();
                     break;
-                case "exit":
-                    System.exit(0);
                 default:
                     break;
             }
@@ -169,10 +169,7 @@ public class CommandService {
             case "--exp":
                 try {
                     int n = Integer.parseInt(command[2]);
-                    List<Job> jobs = jobService.getAll().stream()
-                            .filter(job -> job.getExperience() >= n)
-                            .sorted(Comparator.comparing(Job::getTitle)).toList();
-                    jobs.forEach(System.out::println);
+                    statisticService.filterJobsByExperience(n).forEach(System.out::println);
                 } catch (NumberFormatException e) {
                     return;
                 }
@@ -180,10 +177,7 @@ public class CommandService {
             case "--match":
                 try {
                     int n = Integer.parseInt(command[2]);
-                    List<User> users = userService.getAll().stream()
-                            .filter(user -> matchService.suggest(user.getName()) != null
-                                            && matchService.suggest(user.getName()).size() >= n).toList();
-                    users.forEach(System.out::println);
+                    statisticService.filterUsersByMatches(n).forEach(System.out::println);
                 } catch (NumberFormatException e) {
                     return;
                 }
@@ -191,21 +185,7 @@ public class CommandService {
             case "--top-skills":
                 try {
                     int n = Integer.parseInt(command[2]);
-                    HashMap<String, Integer> skills = new HashMap<>();
-                    userService.getAll().forEach(user -> user.getSkills()
-                            .forEach(skill -> skills.put(skill, skills.get(skill) != null ? skills.get(skill) + 1 : 1)));
-                    int maxValue = skills.values().stream().max(Integer::compareTo).get();
-                    List<String> top = new ArrayList<>();
-                    while (maxValue > 0) {
-                        int finalMaxValue = maxValue;
-                        top.addAll(skills.keySet().stream()
-                                .filter(key -> skills.get(key)
-                                        .equals(finalMaxValue)).sorted().toList());
-                        maxValue--;
-                    }
-                    for (int i = 0; i < n; i++) {
-                        System.out.println(top.get(i));
-                    }
+                    statisticService.findTopUsersSkills(n).forEach(System.out::println);
                 } catch (NumberFormatException e) {
                     return;
                 }

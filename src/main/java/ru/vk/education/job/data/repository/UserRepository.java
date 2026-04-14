@@ -9,7 +9,7 @@ public class UserRepository {
 
     private final List<User> users = new ArrayList<>();
 
-    public User add(User user) {
+    public synchronized User add(User user) {
         if (findByName(user.getName()) != null) {
             return null;
         }
@@ -17,7 +17,7 @@ public class UserRepository {
         return user;
     }
 
-    public User findByName(String name) {
+    public synchronized User findByName(String name) {
         for (User user : users) {
             if (user.getName().equals(name)) {
                 return user;
@@ -26,7 +26,7 @@ public class UserRepository {
         return null;
     }
 
-    public List<User> getAll() {
-        return users;
+    public synchronized List<User> getAll() {
+        return new ArrayList<>(users);
     }
 }
