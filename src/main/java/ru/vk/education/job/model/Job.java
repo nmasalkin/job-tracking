@@ -1,4 +1,4 @@
-package ru.vk.education.job.data.model;
+package ru.vk.education.job.model;
 
 import java.util.List;
 

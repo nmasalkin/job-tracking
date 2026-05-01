@@ -1,10 +1,12 @@
-package ru.vk.education.job.data.repository;
+package ru.vk.education.job.repository;
 
-import ru.vk.education.job.data.model.BestJob;
+import org.springframework.stereotype.Repository;
+import ru.vk.education.job.model.BestJob;
 
 import java.util.ArrayList;
 import java.util.List;
 
+@Repository
 public class BestJobRepository {
 
     private List<BestJob> bestJobs = new ArrayList<>();

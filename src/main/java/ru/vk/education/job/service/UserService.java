@@ -1,10 +1,12 @@
-package ru.vk.education.job.app.service;
+package ru.vk.education.job.service;
 
-import ru.vk.education.job.data.model.User;
-import ru.vk.education.job.data.repository.UserRepository;
+import org.springframework.stereotype.Service;
+import ru.vk.education.job.model.User;
+import ru.vk.education.job.repository.UserRepository;
 
 import java.util.List;
 
+@Service
 public class UserService {
 
     private final UserRepository userRepository;

@@ -1,18 +1,20 @@
-package ru.vk.education.job.app.service;
+package ru.vk.education.job.service;
 
-import ru.vk.education.job.data.model.Job;
-import ru.vk.education.job.data.model.Match;
-import ru.vk.education.job.data.model.User;
+import org.springframework.stereotype.Service;
+import ru.vk.education.job.model.Job;
+import ru.vk.education.job.model.Match;
+import ru.vk.education.job.model.User;
 
 import java.util.ArrayList;
 import java.util.List;
 
-public class MatchService {
+@Service
+public class SuggestService {
 
     private final UserService userService;
     private final JobService jobService;
 
-    public MatchService(UserService userService, JobService jobService) {
+    public SuggestService(UserService userService, JobService jobService) {
         this.userService = userService;
         this.jobService = jobService;
     }

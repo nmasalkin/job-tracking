@@ -1,4 +1,7 @@
-package ru.vk.education.job.app.service;
+package ru.vk.education.job.service;
+
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.stereotype.Service;
 
 import java.io.IOException;
 import java.nio.charset.StandardCharsets;
@@ -7,11 +10,12 @@ import java.nio.file.Path;
 import java.nio.file.StandardOpenOption;
 import java.util.List;
 
+@Service
 public class FileService {
 
     private final Path path;
 
-    public FileService(Path path) {
+    public FileService(@Value("${app.commads-log}") Path path) {
         this.path = path;
         createFile();
     }

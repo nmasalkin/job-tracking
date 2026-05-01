@@ -1,10 +1,12 @@
-package ru.vk.education.job.data.repository;
+package ru.vk.education.job.repository;
 
-import ru.vk.education.job.data.model.Job;
+import org.springframework.stereotype.Repository;
+import ru.vk.education.job.model.Job;
 
 import java.util.ArrayList;
 import java.util.List;
 
+@Repository
 public class JobRepository {
 
     private final List<Job> jobs = new ArrayList<>();

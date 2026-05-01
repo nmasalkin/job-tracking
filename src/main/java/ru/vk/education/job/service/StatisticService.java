@@ -1,23 +1,25 @@
-package ru.vk.education.job.app.service;
+package ru.vk.education.job.service;
 
-import ru.vk.education.job.data.model.Job;
-import ru.vk.education.job.data.model.User;
+import org.springframework.stereotype.Service;
+import ru.vk.education.job.model.Job;
+import ru.vk.education.job.model.User;
 
 import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.HashMap;
 import java.util.List;
 
+@Service
 public class StatisticService {
 
     private final UserService userService;
     private final JobService jobService;
-    private final MatchService matchService;
+    private final SuggestService suggestService;
 
-    public StatisticService(UserService userService, JobService jobService, MatchService matchService) {
+    public StatisticService(UserService userService, JobService jobService, SuggestService suggestService) {
         this.userService = userService;
         this.jobService = jobService;
-        this.matchService = matchService;
+        this.suggestService = suggestService;
     }
 
     public List<Job> filterJobsByExperience(int n) {
@@ -28,8 +30,8 @@ public class StatisticService {
 
     public List<User> filterUsersByMatches(int n) {
         return userService.getAll().stream()
-                .filter(user -> matchService.suggest(user.getName()) != null
-                                && matchService.suggest(user.getName()).size() >= n).toList();
+                .filter(user -> suggestService.suggest(user.getName()) != null
+                                && suggestService.suggest(user.getName()).size() >= n).toList();
     }
 
     public List<String> findTopUsersSkills(int n){

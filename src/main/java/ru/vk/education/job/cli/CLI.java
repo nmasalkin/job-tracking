@@ -1,16 +1,18 @@
-package ru.vk.education.job.app.cli;
+package ru.vk.education.job.cli;
 
-import ru.vk.education.job.app.service.CommandService;
-import ru.vk.education.job.app.service.FileService;
+import org.springframework.stereotype.Component;
+import ru.vk.education.job.service.CommandService;
+import ru.vk.education.job.service.FileService;
 
 import java.util.Scanner;
 
+@Component
 public class CLI {
 
     private final CommandService commandService;
     private final FileService fileService;
 
-    public CLI(CommandService commandService,  FileService fileService) {
+    public CLI(CommandService commandService, FileService fileService) {
         this.commandService = commandService;
         this.fileService = fileService;
     }
@@ -31,7 +33,7 @@ public class CLI {
 
     public void runCommandsFromFile() {
         String[] command;
-        for (String line : fileService.readCommands()){
+        for (String line : fileService.readCommands()) {
             command = line.split(" ");
             if (command[0].equals("user") ||
                 command[0].equals("job")) {

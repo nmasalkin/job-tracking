@@ -1,23 +1,24 @@
-package ru.vk.education.job.app.service;
+package ru.vk.education.job.service;
 
-import ru.vk.education.job.data.model.Job;
-import ru.vk.education.job.data.model.User;
-import ru.vk.education.job.data.repository.BestJobRepository;
+import org.springframework.stereotype.Service;
+import ru.vk.education.job.model.Job;
+import ru.vk.education.job.model.User;
 
 import java.util.*;
 
+@Service
 public class CommandService {
 
     private final UserService userService;
     private final JobService jobService;
-    private final MatchService matchService;
+    private final SuggestService suggestService;
     private final FileService fileService;
     private final StatisticService statisticService;
 
-    public CommandService(UserService userService, JobService jobService, MatchService matchService, FileService fileService, StatisticService statisticService) {
+    public CommandService(UserService userService, JobService jobService, SuggestService suggestService, FileService fileService, StatisticService statisticService) {
         this.userService = userService;
         this.jobService = jobService;
-        this.matchService = matchService;
+        this.suggestService = suggestService;
         this.fileService = fileService;
         this.statisticService = statisticService;
     }
@@ -145,7 +146,7 @@ public class CommandService {
         if (command.length != 2) {
             return;
         }
-        List<Job> jobs = matchService.suggest(command[1]);
+        List<Job> jobs = suggestService.suggest(command[1]);
         if (jobs == null) {
             return;
         }
