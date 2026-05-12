@@ -1,0 +1,14 @@
+spring:
+  application:
+    name: job-tracking
+  sql:
+    init:
+      schema-locations: classpath:db/schema.sql
+      mode: always
+  datasource:
+    driver-class-name: org.postgresql.Driver
+    url: jdbc:postgresql://localhost:5432/job-tracking
+    username: postgres
+    password: "0000"
+app:
+  commands-log: log.txt

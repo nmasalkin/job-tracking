@@ -16,6 +16,9 @@ public class JobService {
     }
 
     public Job add(Job job) {
+        if (jobRepository.getIdByTitle(job.getTitle()) != null) {
+            return null;
+        }
         return jobRepository.add(job);
     }
 

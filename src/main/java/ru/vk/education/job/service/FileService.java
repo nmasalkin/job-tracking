@@ -15,7 +15,7 @@ public class FileService {
 
     private final Path path;
 
-    public FileService(@Value("${app.commads-log}") Path path) {
+    public FileService(@Value("${app.commands-log}") Path path) {
         this.path = path;
         createFile();
     }

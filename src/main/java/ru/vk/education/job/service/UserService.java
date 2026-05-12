@@ -16,11 +16,14 @@ public class UserService {
     }
 
     public User add(User user) {
+        if (userRepository.getIdByName(user.getName()) != null) {
+            return null;
+        }
         return userRepository.add(user);
     }
 
     public User findByName(String name) {
-        return userRepository.findByName(name);
+        return userRepository.getById(userRepository.getIdByName(name));
     }
 
     public List<User> getAll() {
