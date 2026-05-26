@@ -8,6 +8,8 @@ group = 'ru.vk.education'
 version = '0.0.1-SNAPSHOT'
 description = 'job-tracking'
 
+ext['testcontainers.version'] = '1.21.4'
+
 java {
 	toolchain {
 		languageVersion = JavaLanguageVersion.of(17)
@@ -29,8 +31,13 @@ dependencies {
 	implementation('org.springframework.boot:spring-boot-starter-web')
 	implementation 'org.postgresql:postgresql:42.7.3'
 	implementation 'org.springframework.boot:spring-boot-starter-jdbc'
+
+	testRuntimeOnly 'org.junit.platform:junit-platform-launcher'
+
 	testImplementation 'org.springframework.boot:spring-boot-starter-test'
-	testRuntimeOnly 'org.junit.platform:junit-platform-launcher:6.0.3'
+	testImplementation 'org.testcontainers:testcontainers'
+	testImplementation 'org.testcontainers:junit-jupiter'
+	testImplementation 'org.testcontainers:postgresql'
 }
 
 tasks.named('test') {

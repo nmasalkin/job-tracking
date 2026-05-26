@@ -19,6 +19,7 @@ public class SuggestService {
         this.jobService = jobService;
     }
 
+    /**Возвращает не больше 2 вакансий, подходящих указанному пользователю. Степень того, насколько подходит вакансия вычисляться как количество совпадений между skills юзера и tags вакансии. Если опыта (exp) у юзера не хватает, то делиться полученное количество пополам.*/
     public List<Job> suggest(String name) {
         User user = userService.findByName(name);
         if (user == null) {
